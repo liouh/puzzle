@@ -1,13 +1,13 @@
 Tower of Saviors | Web Version
 ==============================
 
-Match-3 puzzle game variation using assets from iOS/Android title [Tower of Saviors](http://www.towerofsaviors.com/en/tutorial)
+Match-3 puzzle game using assets from iOS/Android title [Tower of Saviors](http://www.towerofsaviors.com/en/tutorial)
 
 You can access [an online version here](http://liouh.com/puzzle/)
 
 ### Instructions
 
-Tap on a gem and drag to swap with adjacent gems. You can make as many swaps as you'd like (within 6 seconds). As such, it's possible to create large combos every turn.
+Tap on a gem and drag to swap with adjacent gems. You can make as many swaps as you'd like (within 6 seconds). With enough practice, a player can create large combos every turn.
 
 Supported touch events:
 
