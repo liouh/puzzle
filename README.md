@@ -1,7 +1,7 @@
 Tower of Saviors | Web Version
 ==============================
 
-Match-3 puzzle game variation using assets from iOS/Android title Tower of Saviors
+Match-3 puzzle game variation using assets from iOS/Android title [Tower of Saviors](http://www.towerofsaviors.com/en/tutorial)
 
 You can access [an online version here](http://liouh.com/puzzle/)
 
