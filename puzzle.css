@@ -1,0 +1,102 @@
+html, body {
+	background-color: #222;
+	height: 100%;
+	overflow: hidden;
+	font-family: Sans-serif;
+	-ms-touch-action: none;
+	touch-action: none;
+}
+
+.display-area {
+	margin: 0 auto;
+	background-color: #333;
+	box-shadow: 0 0 20px 10px black, inset 0 0 20px 10px black;
+	color: white;
+	position: relative;
+}
+
+.display-area .counter {
+	margin-left: 8%;
+	padding-left: 14%;
+	width: 28%;
+	float: left;
+	background-position: left;
+	background-repeat: no-repeat;
+	background-size: auto 100%;
+}
+
+.display-area .countdown {
+	height: 4%;
+	background-color: #3ADF00;
+	position: absolute;
+	bottom: 4%;
+	width: 100%;
+	transition: width 0.6s linear;
+	box-shadow: inset 0 1px 5px white, inset 0 -1px 5px black;
+}
+
+.display-area.inactive .countdown {
+	background-color: gray;
+}
+
+.play-area {
+	margin: 0 auto;
+	background-color: black;
+	box-shadow: 0 0 20px 10px black;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.block {
+	position: absolute;
+	transition: 0.1s ease;
+	background-size: 105%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.block.active {
+	transition: none;
+	opacity: 0.5;
+}
+
+.water {
+	background-image: url(water.png);
+}
+
+.fire {
+	background-image: url(fire.png);
+}
+
+.earth {
+	background-image: url(earth.png);
+}
+
+.light {
+	background-image: url(light.png);
+}
+
+.dark {
+	background-image: url(dark.png);
+}
+
+.heart {
+	background-image: url(heart.png);
+}
+
+.play-area.inactive .block {
+
+}
+
+.play-area.inactive .block.blank {
+	opacity: 0;
+}
+
+.play-area.inactive .block.flash {
+	opacity: 1;
+}
