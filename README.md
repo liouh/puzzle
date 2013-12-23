@@ -17,8 +17,8 @@ Supported touch events:
 
 ### Features
 
-* Adjustable grid dimensions (the code is generic and supports any dimension -- use GET params x=[#] & y=[#])
-* Adjustable number of elements (use GET params e=[1-6])
+* Adjustable grid dimensions (use URL params x=[#] & y=[#])
+* Adjustable number of elements (use URL params e=[1-6])
 * Gems cleared counter
 
 ### Library Dependencies
