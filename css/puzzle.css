@@ -66,27 +66,27 @@ html, body {
 }
 
 .water {
-	background-image: url(water.png);
+	background-image: url(../images/water.png);
 }
 
 .fire {
-	background-image: url(fire.png);
+	background-image: url(../images/fire.png);
 }
 
 .earth {
-	background-image: url(earth.png);
+	background-image: url(../images/earth.png);
 }
 
 .light {
-	background-image: url(light.png);
+	background-image: url(../images/light.png);
 }
 
 .dark {
-	background-image: url(dark.png);
+	background-image: url(../images/dark.png);
 }
 
 .heart {
-	background-image: url(heart.png);
+	background-image: url(../images/heart.png);
 }
 
 .play-area.inactive .block {
