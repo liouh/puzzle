@@ -106,6 +106,11 @@ $(function() {
 	
 		$(window).on('resize', render);
 		$(window).on('contextmenu', function() { return false; });
+		$(window).on('mouseout', function(e) {
+			if(e.relatedTarget == null || e.relatedTarget == $('html')[0]) {
+				onBlockUp();
+			}
+		});
 		
 		// mouse
 		$('body').on('mousedown', '.block', onBlockDown);
@@ -170,27 +175,17 @@ $(function() {
 		var xPos = pointerX - (gridSize / 2);
 		var yPos = pointerY - (gridSize / 2);
 		
-		if(xPos > playAreaOffset.left - (gridSize / 2 - 1)
-			&& yPos > playAreaOffset.top - (gridSize / 2 - 1)
-			&& xPos < playArea.width() + playAreaOffset.left - gridSize + (gridSize / 2 - 1)
-			&& yPos < playArea.height() + playAreaOffset.top - gridSize + (gridSize / 2 - 1)
-		) {
-			var location = getGridLocation(pointerX, pointerY);
-			
-			swapBlocks(currentBlock.attr('data-x'), currentBlock.attr('data-y'), location.x, location.y);
-			
-			currentBlock.css({
-				left: xPos,
-				top: yPos
-			});
-		}
-		else {
-			
-			onBlockUp(e);
-		}
+		var location = getGridLocation(pointerX, pointerY);
+		
+		swapBlocks(currentBlock.attr('data-x'), currentBlock.attr('data-y'), location.x, location.y);
+		
+		currentBlock.css({
+			left: xPos,
+			top: yPos
+		});
 	}
 	
-	function onBlockUp(e) {
+	function onBlockUp() {
 		
 		if(!currentBlock) {
 			return;
@@ -399,6 +394,20 @@ $(function() {
 		
 		xPos = Math.floor(xPos / ratioX);
 		yPos = Math.floor(yPos / ratioY);
+		
+		if(xPos >= gridX) {
+			xPos = gridX - 1;
+		}
+		else if(xPos < 0) {
+			xPos = 0;
+		} 
+		
+		if(yPos >= gridY) {
+			yPos = gridY - 1;
+		}
+		else if(yPos < 0) {
+			yPos = 0;
+		}
 		
 		return {x: xPos, y: yPos};
 		

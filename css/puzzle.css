@@ -3,8 +3,15 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 	font-family: Sans-serif;
+	
 	-ms-touch-action: none;
 	touch-action: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .display-area {
@@ -43,18 +50,11 @@ html, body {
 	margin: 0 auto;
 	background-color: black;
 	box-shadow: 0 0 20px 10px black;
-	
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 }
 
 .block {
 	position: absolute;
-	transition: 0.1s ease;
+	transition: top 0.05s linear, left 0.05s linear;
 	background-size: 105%;
 	background-position: center;
 	background-repeat: no-repeat;
