@@ -23,13 +23,45 @@ html, body {
 }
 
 .display-area .counter {
-	margin-left: 8%;
-	padding-left: 14%;
-	width: 28%;
-	float: left;
+	margin-left: 5%;
+	margin-bottom: 1%;
+	padding-left: 11%;
 	background-position: left;
 	background-repeat: no-repeat;
 	background-size: auto 100%;
+}
+
+.display-area .last-combo {
+	position: absolute;
+	text-align: right;
+	right: 8%;
+	top: 175%;
+	z-index: 5;
+	font-style: italic;
+	text-shadow: 0 0 .1em white, 0 0 .2em black, 0 0 .3em black, 0 0 .4em black, 0 0 .5em black;
+}
+
+.display-area .last-combo:after {
+	content: 'combos';
+	font-size: 20%;
+	display: block;
+}
+
+.display-area .stats {
+	position: absolute;
+	text-align: right;
+	right: 5%;
+	bottom: 12%;
+	font-weight: bold;
+}
+
+.display-area .stats span {
+	font-size: 50%;
+	display: block;
+	margin-top: 2%;
+	margin-bottom: 20%;
+	font-weight: normal;
+	color: #999;
 }
 
 .display-area .countdown {
@@ -65,27 +97,27 @@ html, body {
 	opacity: 0.5;
 }
 
-.water {
+.elem-0 {
 	background-image: url(../images/water.png);
 }
 
-.fire {
+.elem-1 {
 	background-image: url(../images/fire.png);
 }
 
-.earth {
+.elem-2 {
 	background-image: url(../images/earth.png);
 }
 
-.light {
+.elem-3 {
 	background-image: url(../images/light.png);
 }
 
-.dark {
+.elem-4 {
 	background-image: url(../images/dark.png);
 }
 
-.heart {
+.elem-5 {
 	background-image: url(../images/heart.png);
 }
 
@@ -94,9 +126,13 @@ html, body {
 }
 
 .play-area.inactive .block.blank {
-	opacity: 0;
+
 }
 
 .play-area.inactive .block.flash {
-	opacity: 1;
+	visibility: hidden;
+}
+
+.play-area.inactive .block.blink {
+	visibility: visible;
 }

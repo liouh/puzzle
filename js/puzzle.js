@@ -10,8 +10,6 @@ $(function() {
 	var timeToMove = 6000;
 	var timeSegments = 10;
 	
-	var counterWater = counterFire = counterEarth = counterLight = counterDark = counterHeart = 0;
-	
 	var gridSize,
 		width,
 		height,
@@ -22,9 +20,13 @@ $(function() {
 		playAreaInactive,
 		blocksSwapped,
 		countdown,
-		timeRemaining;
+		timeRemaining,
+		lastCombo = 0,
+		totalCombos = 0,
+		totalTurns = 0;
 	
 	var grid = [];
+	var counter = [];
 	
 	function initialize() {
 	
@@ -62,20 +64,33 @@ $(function() {
 		
 		var displayArea = $('<div class="display-area" />');
 		displayArea.css({
-			height: gridSize * 3,
-			paddingTop: gridSize * 0.9,
+			height: gridSize * 3.5,
+			paddingTop: gridSize * 0.4,
 			width: width,
-			fontSize: gridSize * 0.65
+			fontSize: gridSize * 0.4
 		});
 		
-		displayArea.append($('<div class="counter water">' + counterWater + '</div>'));
-		displayArea.append($('<div class="counter light">' + counterLight + '</div>'));
-		displayArea.append($('<div class="counter fire">' + counterFire + '</div>'));
-		displayArea.append($('<div class="counter dark">' + counterDark + '</div>'));
-		displayArea.append($('<div class="counter earth">' + counterEarth + '</div>'));
-		displayArea.append($('<div class="counter heart">' + counterHeart + '</div>'));
+		for(var i = 0; i < numElements; i++) {
+			if(counter[i] == null) {
+				counter[i] = 0;
+			}
+			displayArea.append($('<div class="counter elem-' + i + '">' + counter[i] + '</div>'));
+		}
 		
+		var comboDiv = $('<div class="last-combo" />');
+		comboDiv.css({
+			fontSize: gridSize * 1.4
+		}).hide();
+		
+		var statsDiv = $('<div class="stats" />');
+		statsDiv.css({
+			fontSize: gridSize * 0.35
+		});
+		
+		displayArea.append(statsDiv);
 		displayArea.append($('<div class="countdown" />'));
+		displayArea.append(comboDiv);
+		
 		
 		var playArea = $('<div class="play-area" />');
 		playArea.css({
@@ -84,6 +99,10 @@ $(function() {
 		});
 		
 		container.empty().append(displayArea).append(playArea);
+		
+		if(totalTurns > 0) {
+			updateStats();
+		}
 		
 		playAreaOffset = $('.play-area').offset();
 		
@@ -96,7 +115,7 @@ $(function() {
 					width: ratioX,
 					height: ratioY
 				});
-				block.addClass(grid[x][y]);
+				block.addClass('elem-' + grid[x][y]);
 				$('.play-area').append(block);
 			}
 		}
@@ -210,6 +229,8 @@ $(function() {
 			return;
 		}
 		
+		lastCombo = 0;
+		
 		playAreaInactive = true;
 		$('.play-area, .display-area').addClass('inactive');
 		
@@ -233,17 +254,17 @@ $(function() {
 				}
 				
 				if(y + 2 < gridY && grid[x][y] == grid[x][y + 1] && grid[x][y] == grid[x][y + 2]) {
-					clear[x][y] = 'blank';
-					clear[x][y + 1] = 'blank';
-					clear[x][y + 2] = 'blank';
+					clear[x][y] = grid[x][y] + 'blank';
+					clear[x][y + 1] = grid[x][y] + 'blank';
+					clear[x][y + 2] = grid[x][y] + 'blank';
 					$('[data-x=' + x + '][data-y=' + y + ']').addClass('blank');
 					$('[data-x=' + x + '][data-y=' + (y + 1) + ']').addClass('blank');
 					$('[data-x=' + x + '][data-y=' + (y + 2) + ']').addClass('blank');
 				}
 				if(x + 2 < gridX && grid[x][y] == grid[x + 1][y] && grid[x][y] == grid[x + 2][y]) {
-					clear[x][y] = 'blank';
-					clear[x + 1][y] = 'blank';
-					clear[x + 2][y] = 'blank';
+					clear[x][y] = grid[x][y] + 'blank';
+					clear[x + 1][y] = grid[x][y] + 'blank';
+					clear[x + 2][y] = grid[x][y] + 'blank';
 					$('[data-x=' + x + '][data-y=' + y + ']').addClass('blank');
 					$('[data-x=' + (x + 1) + '][data-y=' + y + ']').addClass('blank');
 					$('[data-x=' + (x + 2) + '][data-y=' + y + ']').addClass('blank');
@@ -260,40 +281,92 @@ $(function() {
 		
 		if(cleared) {
 			
-			setTimeout(function() { $('.block.blank').toggleClass('flash'); }, 100);
-			setTimeout(function() { $('.block.blank').toggleClass('flash'); }, 200);
-			setTimeout(function() { $('.block.blank').toggleClass('flash'); }, 300);
+			clearSection(false);
 			
-			setTimeout(function() {
-				
-				counterWater += $('.block.blank.water').length;
-				$('.counter.water').text(counterWater);
-				counterFire += $('.block.blank.fire').length;
-				$('.counter.fire').text(counterFire);
-				counterEarth += $('.block.blank.earth').length;
-				$('.counter.earth').text(counterEarth);
-				counterLight += $('.block.blank.light').length;
-				$('.counter.light').text(counterLight);
-				counterDark += $('.block.blank.dark').length;
-				$('.counter.dark').text(counterDark);
-				counterHeart += $('.block.blank.heart').length;
-				$('.counter.heart').text(counterHeart);
-				
-				$('.block.blank').attr('class', 'block');
-				dropBlocks();
-			}, 400);
-		
 		} else {
 			$('.play-area, .display-area').removeClass('inactive');
 			playAreaInactive = false;
 			blocksSwapped = false;
+			
+			totalCombos += lastCombo;
+			totalTurns++;
+			
+			$('.last-combo').hide();
+			
+			updateStats();
 		}
+	}
+	
+	function findSection(x, y, e, next) {
+		
+		if(x < 0 || x >= gridX || y < 0 || y >= gridY || grid[x][y] != e) {
+			return;
+		}
+		
+		var elem = $('[data-x=' + x + '][data-y=' + y + ']');
+		var delay = false;
+		if(elem.hasClass('blank')) {
+		
+			grid[x][y] = 'blank';
+			elem.removeClass('blank').addClass('flash');
+			findSection(x - 1, y, e);
+			findSection(x + 1, y, e);
+			findSection(x, y - 1, e);
+			findSection(x, y + 1, e);
+			delay = true;
+		}
+		
+		if(next) {
+			
+			clearSection(delay);
+			
+		}
+	}
+	
+	function clearSection(delay) {
+	
+		if(delay) {
+			
+			lastCombo++;
+			if(lastCombo > 1) {
+				$('.last-combo').text(lastCombo).show();
+			}
+			
+			setTimeout(function() { $('.block.flash').addClass('blink'); }, 80);
+			setTimeout(function() { $('.block.flash').removeClass('blink'); }, 160);
+			setTimeout(function() { $('.block.flash').addClass('blink'); }, 240);
+			
+			setTimeout(function() {
+				
+				for(var i = 0; i < numElements; i++) {
+					counter[i] += $('.block.flash.elem-' + i).length;
+					$('.counter.elem-' + i).text(counter[i]);
+				}
+				$('.block.flash').attr('class', 'block');
+			
+			}, 320);
+		}
+		
+		delay = delay ? 400 : 0;
+		
+		setTimeout(function() {
+			
+			if($('.block.blank').length) {
+				var block = $($('.block.blank')[0]);
+				var x = parseInt(block.attr('data-x'));
+				var y = parseInt(block.attr('data-y'));
+				findSection(x, y, grid[x][y], true);
+			}
+			else {
+				dropBlocks();
+			}
+		}, delay);
 	}
 	
 	function dropBlocks() {
 	
 		var dropped = false;
-		for(var x = gridX - 1; x >= 0; x--) {
+		for(var x = 0; x < gridX; x++) {
 			for(var y = gridY - 1; y >= 0; y--) {
 			
 				if(grid[x][y] == 'blank' && y > 0 && grid[x][y - 1] != 'blank') {
@@ -305,10 +378,10 @@ $(function() {
 		}
 		
 		if(dropped) {
-			setTimeout(dropBlocks, 50);
+			setTimeout(dropBlocks, 20);
 		}
 		else {
-			setTimeout(fillBlocks, 50);
+			setTimeout(fillBlocks, 20);
 		}
 	}
 	
@@ -321,7 +394,7 @@ $(function() {
 				filled = true;
 				var element = getRandomElement();
 				grid[x][0] = element;
-				$('[data-x=' + x + '][data-y=0]').css('top', -1 * ratioY + playAreaOffset.top).addClass(element);
+				$('[data-x=' + x + '][data-y=0]').css('top', -1 * ratioY + playAreaOffset.top).addClass('elem-' + element);
 			}
 		}
 	
@@ -329,7 +402,7 @@ $(function() {
 			setTimeout(function() {
 				$('[data-y=0]').css('top', playAreaOffset.top);
 				dropBlocks();
-			}, 50);
+			}, 80);
 		} else {
 			clearBlocks();
 		}
@@ -387,6 +460,21 @@ $(function() {
 		}, timeToMove / timeSegments);
 	}
 	
+	function updateStats() {
+	
+		var totalMatches = 0;
+		for(var i = 0; i < numElements; i++) {
+			totalMatches += counter[i];
+		}
+	
+		var html =  totalTurns + '<span>total turns</span>' +
+					(totalCombos / totalTurns).toFixed(1) + '<span>combos / turn</span>' +
+					(totalMatches / totalTurns).toFixed(1) + '<span>gems / turn</span>' +
+					lastCombo + '<span>last combo</span>';
+		
+		$('.stats').html(html);
+	}
+	
 	function getGridLocation(xPos, yPos) {
 		
 		xPos = xPos - playAreaOffset.left;
@@ -416,16 +504,6 @@ $(function() {
 	function getRandomElement() {
 		
 		var element = Math.floor(Math.random() * numElements);
-		
-		switch(element) {
-		
-			case 0: element = 'water'; break;
-			case 1: element = 'fire'; break;
-			case 2: element = 'earth'; break;
-			case 3: element = 'light'; break;
-			case 4: element = 'dark'; break;
-			case 5: element = 'heart'; break;
-		}
 		
 		return element;
 	}
