@@ -94,7 +94,14 @@ html, body {
 
 .block.active {
 	transition: none;
-	opacity: 0.5;
+}
+
+.block.flash {
+	visibility: hidden;
+}
+
+.block.blink {
+	visibility: visible;
 }
 
 .elem-0 {
@@ -119,20 +126,4 @@ html, body {
 
 .elem-5 {
 	background-image: url(../images/heart.png);
-}
-
-.play-area.inactive .block {
-
-}
-
-.play-area.inactive .block.blank {
-
-}
-
-.play-area.inactive .block.flash {
-	visibility: hidden;
-}
-
-.play-area.inactive .block.blink {
-	visibility: visible;
 }

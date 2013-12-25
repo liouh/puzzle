@@ -254,17 +254,17 @@ $(function() {
 				}
 				
 				if(y + 2 < gridY && grid[x][y] == grid[x][y + 1] && grid[x][y] == grid[x][y + 2]) {
-					clear[x][y] = grid[x][y] + 'blank';
-					clear[x][y + 1] = grid[x][y] + 'blank';
-					clear[x][y + 2] = grid[x][y] + 'blank';
+					clear[x][y] = grid[x][y] + ' blank';
+					clear[x][y + 1] = grid[x][y] + ' blank';
+					clear[x][y + 2] = grid[x][y] + ' blank';
 					$('[data-x=' + x + '][data-y=' + y + ']').addClass('blank');
 					$('[data-x=' + x + '][data-y=' + (y + 1) + ']').addClass('blank');
 					$('[data-x=' + x + '][data-y=' + (y + 2) + ']').addClass('blank');
 				}
 				if(x + 2 < gridX && grid[x][y] == grid[x + 1][y] && grid[x][y] == grid[x + 2][y]) {
-					clear[x][y] = grid[x][y] + 'blank';
-					clear[x + 1][y] = grid[x][y] + 'blank';
-					clear[x + 2][y] = grid[x][y] + 'blank';
+					clear[x][y] = grid[x][y] + ' blank';
+					clear[x + 1][y] = grid[x][y] + ' blank';
+					clear[x + 2][y] = grid[x][y] + ' blank';
 					$('[data-x=' + x + '][data-y=' + y + ']').addClass('blank');
 					$('[data-x=' + (x + 1) + '][data-y=' + y + ']').addClass('blank');
 					$('[data-x=' + (x + 2) + '][data-y=' + y + ']').addClass('blank');
@@ -328,7 +328,7 @@ $(function() {
 		if(delay) {
 			
 			lastCombo++;
-			if(lastCombo > 1) {
+			if(lastCombo > 2) {
 				$('.last-combo').text(lastCombo).show();
 			}
 			
